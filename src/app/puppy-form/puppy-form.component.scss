@@ -1,9 +1,32 @@
-.form-container{
+@import '../../colors';
+
+.form-wrapper{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.form-container {
     position: relative;
-    
+    display: inline-block;
+    padding: 20px;
+    box-shadow: $box-shadow;
+    border: 1px solid $border-gray;
+    margin: 0 auto;
+    border-radius: 5px;
+    text-align: left;
+    width: 30%;
+    min-width: 244px;
     h1{
         margin-top:  0px;
+        margin-bottom: 20px;
+        color: $readymed-blue;
     }
+}
+
+.form-button{
+    width: 100%;
+    text-align: right;
 }
 
 .buttons{

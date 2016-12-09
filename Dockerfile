@@ -1,3 +1,9 @@
 FROM node:argon
-# replace this with your application's default port
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY . /
+
 EXPOSE 80
+
+CMD["ng", "server", "--host", "0.0.0.0", "--port", "80"]

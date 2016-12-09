@@ -1,6 +1,5 @@
-html{
-    height: 100%;
-}
+@import '../../colors';
+
 .wrapper{
     position:absolute;
     top:0;
@@ -27,7 +26,7 @@ html{
 }
 
 .table-footer {
-    border: 1px solid #d7d7d7;
+    border: 1px solid $border-gray;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: 0 4px 2px -2px lightgray;
@@ -47,11 +46,20 @@ tr:hover{
         font-size: 150%;
         visibility: hidden;
     }
-    
 }
 
-$border-color: #d6e3e9;
-$background-color: white;
+#puppyTable{
+    width: 100%;
+    
+    th, td{
+        padding: 10px;
+    }
+    
+    tr.selected td{
+        background: lightgray;
+    }
+}
+
 #puppyTable{
     width: 100%;
     tbody tr:last-child td{
@@ -63,7 +71,7 @@ $background-color: white;
     }
     th, td{
         background: $background-color;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $border-blue;
     }
     
     tr {
@@ -72,11 +80,11 @@ $background-color: white;
         }
         
         td:first-child, th:first-child{
-           border-left: 1px solid $border-color; 
+           border-left: 1px solid $border-blue; 
         }
         
         td:last-child, th:last-child{
-            border-right: 1px solid $border-color;
+            border-right: 1px solid $border-blue;
         }
     }
 }

@@ -13,12 +13,17 @@
 
 .puppy-info {
   float: left;
-  padding-left: 20px; }
+  padding-left: 20px;
+  font-size: 130%; }
 
 .puppy-name {
-  font-size: 130%;
+  font-size: 200%;
   font-weight: bold;
   color: #497c99; }
+
+.puppy-breed {
+  margin-bottom: 10px;
+  margin-top: 10px; }
 
 .buttons {
   width: 60%; }
@@ -37,7 +42,7 @@
 
   .pet-detail {
     margin: 0px;
-    padding-top: 10px;
+    padding-top: 0px;
     border-radius: 0px;
     width: 100%;
     text-align: center;

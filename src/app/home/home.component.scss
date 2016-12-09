@@ -1,6 +1,8 @@
+@import '../../colors';
+
 .footer{
     position: relative;
-    background: #333333;
+    background: $footer-background;
     padding: 20px 30px 20px 30px;
     .top{
         .link{
@@ -28,4 +30,185 @@
 
 .hero-button a{
     color: white !important;
+}
+
+.hero{
+    position: fixed;
+    top: 0;
+    
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.hero-view{
+    position: relative;
+    background: rgba(43, 43, 43, 0.59);
+    padding: 100px 10px;
+    .hero-content{
+        color: white;
+        text-align: center;
+        text-shadow: 1px 1px 2px #000000;
+        
+        .hero-header{
+            font-size:  250%;
+            margin-bottom: 20px;
+        }
+        
+        .hero-caption {
+            width: 50%;
+            margin: 0 auto;
+            line-height: 2;
+            margin-bottom: 40px;
+        }
+        
+        .hero-button{
+            display: inline;
+            padding: 10px 45px;
+            border: 1px solid;
+            border-radius: 5px;
+            font-size: 130%;
+        }
+    }
+}
+
+.content{
+    position: relative;
+    background: white;
+    padding: 40px 0px;
+    
+    &.blue{
+        background: $readymed-blue;
+        color: white;
+        height: 400px;
+    }
+}
+
+.content-header{
+    text-align: center;
+    font-size: 200%;
+    margin-bottom: 40px;
+}
+
+.content-container{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.opt-container{
+    padding: 10px;
+}
+
+.opt{
+    width: 33.3333%;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px 10px;
+    height: 80px;
+    
+    .opt-icon{
+        font-size: 308%;
+        margin-top: -6px;
+        display: block;
+        float: left;
+    }
+    
+    .opt-text-wrapper {
+        text-align: center;
+        
+        .opt-text{
+            transform: translateY(84%);
+        }
+    }
+}
+
+.card{
+    width: 33.3333%;
+    text-align: center;
+    float: left;
+    padding: 0px 20px;
+    margin-bottom: 50px!important;
+    .card-icon{
+        position: relative;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        border-radius: 75px;
+        background: $readymed-blue;
+        color: white;
+        font-size: 350%;
+        margin-bottom: 10px;
+        
+        i.fa.fa-users {
+            position: absolute;
+            font-size: 40%;
+            top: 44px;
+            left: 39px;
+        }
+    }
+    .card-header{
+        font-weight: bold;
+        margin: 20px 0px;
+    }
+}
+
+@media(min-width: 1527px){
+    .hero-view{
+        .hero-content{
+            .hero-caption{
+                width: 33%;
+            }
+        }
+    }
+}
+
+@media(max-width: 1151px){
+    .hero-view{
+        .hero-content{
+            .hero-caption{
+                width: 45%;
+            }
+        }
+    }
+}
+
+@media (max-width: 907px) {
+    .hero-view{
+        padding: 50px 10px;   
+    }
+}
+
+@media(max-width: 815px){
+    .card{
+        float: none;
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    .hero{
+        height: 100vh;
+        background: url(./assets/readypets-bg.jpg);
+        background-size: cover;
+        background-position-x: center;
+        width: 100%;
+        
+        img{
+            display: none;
+        }
+    }
+    
+    .hero-view{
+        //font-size: 80%;
+    }
+}
+
+@media(max-width: 628px){
+    .hero-view{
+        .hero-content{
+            .hero-caption{
+                width: 80%;
+            }
+        }
+    }
 }
