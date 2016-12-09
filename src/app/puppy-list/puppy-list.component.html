@@ -1,0 +1,24 @@
+<div class="container">
+<search (onSearch)="onSearch($event)"></search>
+  <table id="puppyTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Breed</th>
+        <th>Color</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let puppy of puppies | async | search:searchStr" (click)="onClick(puppy)">
+        <td>{{puppy.name}}</td>
+        <td>{{puppy.breed}}</td>
+        <td>{{puppy.color}}</td>
+        <td class="delete" (click)="deleteRow($event, puppy)"><i class="fa fa-times" aria-hidden="true"></i></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-footer clearfix">
+    <a routerLink="./add"><div class="button add"><i class="fa fa-plus" aria-hidden="true"></i></div></a>
+  </div>
+</div>

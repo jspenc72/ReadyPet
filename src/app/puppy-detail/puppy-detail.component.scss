@@ -1,0 +1,77 @@
+.pet-detail{
+    padding: 20px;
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    border: 1px solid #d6e3e9;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 2px -2px lightgray;
+}
+
+.puppy-img{
+    float: left;
+}
+
+.puppy-info{
+    float: left;
+    padding-left: 20px;
+}
+
+.puppy-name{
+    font-size: 130%;
+    font-weight: bold;
+    color: #497c99;
+}
+
+.buttons{
+    width: 60%;
+}
+
+.edit{
+    float: right;
+    cursor: pointer;
+    &.active.back-button {
+        box-shadow: inset 0px 0px 7px #b3b3b3;
+    }
+}
+
+@media(max-width: 628px){
+    .buttons{
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        .back-button{
+            // border: none;
+            // border-radius: 0px;
+            // padding: 0px;
+            // color: #497c99;
+        }
+    }
+
+    .pet-detail{
+        margin: 0px;
+        padding-top: 0px;
+        border-radius: 0px;
+        width: 100%;
+        text-align: center;
+        border: none;
+    }
+    
+    .puppy-info{
+        text-align: left;
+        padding: 0px;
+    }
+    
+    .puppy-img{
+        margin-bottom: 10px;
+        img{
+            width: 100%;
+        }
+    }
+    .puppy-img, .puppy-info{
+        float: none;
+    }
+    
+    
+}

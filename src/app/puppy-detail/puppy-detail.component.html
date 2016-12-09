@@ -1,0 +1,11 @@
+<div class="buttons"><a routerLink="/puppies"><div class="btn btn-custom"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</div></a><div class="btn btn-custom edit" [ngClass]="{'active': isEdit == true}" (click)="toggleEdit()">Edit</div></div>
+<div class="pet-detail clearfix">
+    <div class="puppy-img"><img src="../assets/user-img.png" /></div>
+    <div class="puppy-info">
+        <div class="puppy-name">{{puppy.name}}</div>
+        <div class="puppy-breed">{{puppy.breed}}</div>
+        <div class="puppy-color">{{puppy.color}}</div>
+        
+    </div>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,31 @@
+.footer{
+    position: relative;
+    background: #333333;
+    padding: 20px 30px 20px 30px;
+    .top{
+        .link{
+            padding: 10px;
+            color: white;
+        }
+    }
+    
+    .bottom{
+        color: white;
+        padding: 10px;
+        
+        .footer-logo{
+            font-size: 175%;
+        }
+        .pet{
+            font-weight: bold;
+        }
+        
+        .copyright{
+            float: right;
+        }
+    }
+}
+
+.hero-button a{
+    color: white !important;
+}
