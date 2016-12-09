@@ -1,7 +1,7 @@
 <div class="form-wrapper clearfix">
     <div class="buttons" *ngIf="id == null"><a routerLink=".."><div class="btn btn-custom"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</div></a></div>
     <div class="form-container">
-        <h1><span *ngIf="id == null">New</span><span *ngIf="id != null">Edit</span> Puppy</h1>
+        <h1 [ngSwitch]="!!id"><span *ngSwitchCase="false">New</span><span *ngSwitchCase="true">Edit</span> Puppy</h1>
         <form (ngSubmit)="onSubmit()" #puppyForm="ngForm">
             <div class="form-group">
                 <label for="name" class="required" [ngClass]="{error: !name.valid && !name.pristine}">Name</label>
