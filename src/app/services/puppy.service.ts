@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 
 
 export interface Puppy{
-    _id: number,
+    _id: string,
     name: string,
     breed: string,
     color: string
@@ -28,32 +28,42 @@ export class PuppyService {
         this._puppies = <BehaviorSubject<Puppy[]>> new BehaviorSubject([]);
         this.puppies = this._puppies.asObservable();
     }
-
+    
+    private responseToJson(res:Response){
+        return res.json() || {};
+    }
+    
+    private handleError(err:Response){
+        console.error(err.toString());    
+    }
+    
     // Load all puppies
     loadAll() {
-        return this.http.get(this.baseUrl).map(response => response.json()).map(data => {
-            this.dataStore.puppies = data;
-            this._puppies.next(Object.assign({}, this.dataStore).puppies);
-        }, error => console.log('could not load puppies')).toPromise();
+        return this.http.get(this.baseUrl).map(this.responseToJson)
+            .map(data => {
+                this.dataStore.puppies = data;
+                this._puppies.next(Object.assign({}, this.dataStore).puppies);
+            }).toPromise().catch(this.handleError);
     }
     
     // Load single puppy by Id
     load(id){
-        return this.http.get(this.baseUrl + id).map(response => response.json()).map(data => {
-            let notFound = true;
-            this.dataStore.puppies.forEach((item, index) => {
-                if(item._id === data._id){
-                    this.dataStore.puppies[index] = data;
-                    notFound = false;
+        return this.http.get(this.baseUrl + id).map(this.responseToJson)
+            .map(data => {
+                let notFound = true;
+                this.dataStore.puppies.forEach((item, index) => {
+                    if(item._id === data._id){
+                        this.dataStore.puppies[index] = data;
+                        notFound = false;
+                    }
+                });
+                
+                if(notFound){
+                    this.dataStore.puppies.push(data);
                 }
-            });
-            
-            if(notFound){
-                this.dataStore.puppies.push(data);
-            }
-            
-            this._puppies.next(Object.assign({}, this.dataStore).puppies);
-        }, error => console.log("could not load puppies")).toPromise();
+                
+                this._puppies.next(Object.assign({}, this.dataStore).puppies);
+            }).toPromise().catch(this.handleError);
     }
     
     // Create puppy
@@ -62,10 +72,10 @@ export class PuppyService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.baseUrl + 'create', JSON.stringify(puppy), options)
-          .map(response => response.json()).map(data => {
-            this.dataStore.puppies.push(data);
-            this._puppies.next(Object.assign({}, this.dataStore).puppies);
-          }, error => console.log('Could not create todo.')).toPromise();
+            .map(this.responseToJson).map(data => {
+                this.dataStore.puppies.push(data);
+                this._puppies.next(Object.assign({}, this.dataStore).puppies);
+            }).toPromise().catch(this.handleError);
     }
     
     // Update puppy
@@ -74,7 +84,7 @@ export class PuppyService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.put(this.baseUrl + puppy._id, JSON.stringify(puppy), options)
-            .map(response => response.json()).map(data => {
+            .map(this.responseToJson).map(data => {
                 this.dataStore.puppies.forEach((puppy, i) => {
                     if(puppy._id === data._id){
                         this.dataStore.puppies[i] = data;
@@ -82,20 +92,21 @@ export class PuppyService {
                 });
                 
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
-            }, error => console.log('Could not update puppy')).toPromise();
+            }).toPromise().catch(this.handleError);
     }
     
     // Remove puppy
-    remove(puppyId: number){
-        return this.http.delete(this.baseUrl + puppyId).map(response => response.json()).map(response => {
-            this.dataStore.puppies.forEach((puppy, i) => {
-                if(puppy._id === puppyId){
-                    this.dataStore.puppies.splice(i, 1);
-                }
-            });
-            
-            this._puppies.next(Object.assign({}, this.dataStore).puppies);
-        }, error => console.log('Could not delete puppy ' + puppyId)).toPromise();
+    remove(puppyId: string){
+        return this.http.delete(this.baseUrl + puppyId)
+            .map(response => {
+                this.dataStore.puppies.forEach((puppy, i) => {
+                    if(puppy._id == puppyId){
+                        this.dataStore.puppies.splice(i, 1);
+                    }
+                });
+                
+                this._puppies.next(Object.assign({}, this.dataStore).puppies);
+            }).toPromise().catch(this.handleError);
     }
 
 }

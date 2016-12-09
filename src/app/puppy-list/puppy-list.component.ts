@@ -33,7 +33,7 @@ export class PuppyListComponent implements OnInit {
   constructor(public router:Router, private puppyService: PuppyService) { }
 
   ngOnInit() {
-    this.puppies = this.puppyService.puppies.map(puppies => puppies);
+    this.puppies = this.puppyService.puppies;
     
     this.puppyService.loadAll();
   }
