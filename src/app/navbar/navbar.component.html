@@ -1,6 +1,6 @@
 <div class="header" id="header" [ngClass]="{'open': open === true}">
     <span class="icon-container">
-        <a routerLink="/">
+        <a routerLink="/" (click)="closeNav()">
             <img src="../assets/rp-logo.png" />
             <span class="icon-text"><span class="icon-red">READY</span>PET</span>
         </a>
