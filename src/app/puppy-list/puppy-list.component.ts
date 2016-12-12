@@ -6,38 +6,36 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'puppy-list',
-  templateUrl: './puppy-list.component.html',
-  styleUrls: ['./puppy-list.component.scss']
+    selector: 'puppy-list',
+    templateUrl: './puppy-list.component.html',
+    styleUrls: ['./puppy-list.component.scss']
 })
 
 export class PuppyListComponent implements OnInit {
-  searchStr: string = '';
-  puppies: Puppy[];
+searchStr: string = '';
+puppies: Puppy[];
 
-  constructor( public router:Router, private puppyService: PuppyService ) { }
-  
-  onSearch(search){
-    this.searchStr = search;
-  }
-  
-  onClick(puppy){
-    this.router.navigate(['/puppy/'+puppy._id]);
-  }
-  
-  deleteRow($event, puppy: Puppy){
-    $event.stopPropagation();
-    this.puppyService.remove(puppy._id).then(() => {
-      this.puppyService.loadAll();
-    })
-  }
+constructor( public router:Router, private puppyService: PuppyService ) { }
 
-  ngOnInit() {
-    this.puppyService.puppies.subscribe((result) => {
-      this.puppies = result;
-    });
+    onSearch(search){
+        this.searchStr = search;
+    }
     
-    this.puppyService.loadAll();
-  }
+    onClick(puppy){
+        this.router.navigate(['/puppy/'+puppy._id]);
+    }
+    
+    deleteRow($event, puppy: Puppy){
+        $event.stopPropagation();
+        this.puppyService.remove(puppy._id);
+    }
+    
+    ngOnInit() {
+        this.puppyService.puppies.subscribe((result) => {
+            this.puppies = result;
+        });
+        
+        this.puppyService.loadAll();
+    }
 
 }

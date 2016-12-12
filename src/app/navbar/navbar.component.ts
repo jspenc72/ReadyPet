@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
     open = false;
     options = [{url: '/puppies', title: 'Puppies', enabled: 'true', }, {url: '/kittens', title: 'Kittens', enabled: 'false'}];
+    
+    constructor(public router:Router){}
+    
     toggleNav(){
         this.open = !this.open;
     }
@@ -17,6 +20,4 @@ export class NavbarComponent {
     closeNav(){
         this.open = false;
     }
-    
-    constructor(public router:Router){}
 }

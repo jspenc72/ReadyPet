@@ -1,30 +1,36 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Search } from '../classes/search';
 
 @Component({
-  selector: 'search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+    selector: 'search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  model: Search = new Search('');
-
-  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
+    model: string = '';
+    timeout;
   
-  search(){
+    @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
+    
+    constructor() { }
+    
+    search(){
     // emits search to list component
-    this.onSearch.emit(this.model.search);
-  }
-  
-  onKey(event:any){
-    // search on 'Enter' key
-    if(event.keyCode == 13){
-      this.search();
+        this.onSearch.emit(this.model);
     }
-  }
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  
+    onKey(event:any){
+        // search on 'Enter' key
+        if(event.keyCode == 13){
+            this.search();
+        }else{
+            // debounce the function
+            let self = this;
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                self.search();
+            }, 300)
+        }
+    }
+    
+    ngOnInit() { }
 }

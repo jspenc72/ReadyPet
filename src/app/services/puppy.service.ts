@@ -19,13 +19,12 @@ export class PuppyService {
     private _puppies: BehaviorSubject<Puppy[]>;
     private baseUrl: string;
     private dataStore: {
-        puppies: Puppy[],
-        puppiesById: Puppy[]
+        puppies: Puppy[]
     }
     
     constructor(private http: Http) { 
         this.baseUrl = "http://edwardhoward.io:8080/api/puppies/";
-        this.dataStore = { puppies: [], puppiesById: [] };
+        this.dataStore = { puppies: [] };
         this._puppies = <BehaviorSubject<Puppy[]>> new BehaviorSubject([]);
         this.puppies = this._puppies.asObservable();
     }
@@ -42,25 +41,23 @@ export class PuppyService {
     loadAll() {
         return this.http.get(this.baseUrl)
             .map(data => {
-                let jsonData = this.responseToJson(data);
-                jsonData.reduce((r, a) => {
-                    r[a._id] = a;
-                    return r;
-                }, this.dataStore.puppiesById);
                 
-                this.dataStore.puppies = jsonData;
+                this.dataStore.puppies = this.responseToJson(data);
+                
+                // trigger observable
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }
     
     // Load single puppy by Id
-    load(id){
-        if(this.dataStore.puppiesById[id]) return new Promise((resolve, reject) => resolve());
+    load(id:string, forceLoad?:boolean){
         
         return this.http.get(this.baseUrl + id)
             .map(data => {
                 let jsonData = this.responseToJson(data);
                 let notFound = true;
+                
+                // Update puppy if it already exists..
                 this.dataStore.puppies.forEach((item, index) => {
                     if(item._id === jsonData._id){
                         this.dataStore.puppies[index] = jsonData;
@@ -68,10 +65,12 @@ export class PuppyService {
                     }
                 });
                 
+                // ..otherwise add it
                 if(notFound){
                     this.dataStore.puppies.push(jsonData);
                 }
                 
+                // trigger observable
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }
@@ -83,10 +82,14 @@ export class PuppyService {
 
         return this.http.post(this.baseUrl + 'create', JSON.stringify(puppy), options)
             .map(data => {
+                
+                // Store new puppy
                 let jsonData = this.responseToJson(data);
-                this.dataStore.puppiesById[jsonData._id] = jsonData;
                 this.dataStore.puppies.push(jsonData);
+                
+                // trigger observable
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
+                
             }).toPromise().catch(this.handleError);
     }
     
@@ -99,14 +102,14 @@ export class PuppyService {
             .map(data => {
                 let jsonData = this.responseToJson(data);
                 
-                this.dataStore.puppiesById[puppy._id] = jsonData;
-                
+                // Find the puppy and replace data with new data
                 this.dataStore.puppies.forEach((puppy, i) => {
                     if(puppy._id === jsonData._id){
                         this.dataStore.puppies[i] = jsonData;
                     }  
                 });
                 
+                // trigger observable
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }
@@ -115,14 +118,13 @@ export class PuppyService {
     remove(puppyId: string){
         return this.http.delete(this.baseUrl + puppyId)
             .map(response => {
-                this.dataStore.puppiesById[puppyId] = null;
-                this.dataStore.puppies.forEach((puppy, i) => {
-                    if(puppy._id == puppyId){
-                        this.dataStore.puppies.splice(i, 1);
-                    }
-                });
+                
+                // Remove puppy from the dataStore
+                this.dataStore.puppies = this.dataStore.puppies.filter((puppy) => puppy._id != puppyId);
+
+                // trigger observable
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
+                
             }).toPromise().catch(this.handleError);
     }
-
 }
