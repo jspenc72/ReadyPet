@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 export class NavbarComponent {
     open = false;
-    options = [{url: '/puppies', title: 'Puppies', enabled: 'true', }, {url: '/kittens', title: 'Kittens', enabled: 'false'}];
+    options = [{url: '/puppies', title: 'Puppies' }, {url: '/kittens', title: 'Kittens' }];
     
     constructor(public router:Router){}
     
