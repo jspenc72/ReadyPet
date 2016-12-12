@@ -19,12 +19,13 @@ export class PuppyService {
     private _puppies: BehaviorSubject<Puppy[]>;
     private baseUrl: string;
     private dataStore: {
-        puppies: Puppy[]
+        puppies: Puppy[],
+        puppiesById: Puppy[]
     }
     
     constructor(private http: Http) { 
         this.baseUrl = "http://edwardhoward.io:8080/api/puppies/";
-        this.dataStore = { puppies: [] };
+        this.dataStore = { puppies: [], puppiesById: [] };
         this._puppies = <BehaviorSubject<Puppy[]>> new BehaviorSubject([]);
         this.puppies = this._puppies.asObservable();
     }
@@ -39,27 +40,36 @@ export class PuppyService {
     
     // Load all puppies
     loadAll() {
-        return this.http.get(this.baseUrl).map(this.responseToJson)
+        return this.http.get(this.baseUrl)
             .map(data => {
-                this.dataStore.puppies = data;
+                let jsonData = this.responseToJson(data);
+                jsonData.reduce((r, a) => {
+                    r[a._id] = a;
+                    return r;
+                }, this.dataStore.puppiesById);
+                
+                this.dataStore.puppies = jsonData;
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }
     
     // Load single puppy by Id
     load(id){
-        return this.http.get(this.baseUrl + id).map(this.responseToJson)
+        if(this.dataStore.puppiesById[id]) return new Promise((resolve, reject) => resolve());
+        
+        return this.http.get(this.baseUrl + id)
             .map(data => {
+                let jsonData = this.responseToJson(data);
                 let notFound = true;
                 this.dataStore.puppies.forEach((item, index) => {
-                    if(item._id === data._id){
-                        this.dataStore.puppies[index] = data;
+                    if(item._id === jsonData._id){
+                        this.dataStore.puppies[index] = jsonData;
                         notFound = false;
                     }
                 });
                 
                 if(notFound){
-                    this.dataStore.puppies.push(data);
+                    this.dataStore.puppies.push(jsonData);
                 }
                 
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
@@ -72,8 +82,10 @@ export class PuppyService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.baseUrl + 'create', JSON.stringify(puppy), options)
-            .map(this.responseToJson).map(data => {
-                this.dataStore.puppies.push(data);
+            .map(data => {
+                let jsonData = this.responseToJson(data);
+                this.dataStore.puppiesById[jsonData._id] = jsonData;
+                this.dataStore.puppies.push(jsonData);
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }
@@ -84,10 +96,14 @@ export class PuppyService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.put(this.baseUrl + puppy._id, JSON.stringify(puppy), options)
-            .map(this.responseToJson).map(data => {
+            .map(data => {
+                let jsonData = this.responseToJson(data);
+                
+                this.dataStore.puppiesById[puppy._id] = jsonData;
+                
                 this.dataStore.puppies.forEach((puppy, i) => {
-                    if(puppy._id === data._id){
-                        this.dataStore.puppies[i] = data;
+                    if(puppy._id === jsonData._id){
+                        this.dataStore.puppies[i] = jsonData;
                     }  
                 });
                 
@@ -99,12 +115,12 @@ export class PuppyService {
     remove(puppyId: string){
         return this.http.delete(this.baseUrl + puppyId)
             .map(response => {
+                this.dataStore.puppiesById[puppyId] = null;
                 this.dataStore.puppies.forEach((puppy, i) => {
                     if(puppy._id == puppyId){
                         this.dataStore.puppies.splice(i, 1);
                     }
                 });
-                
                 this._puppies.next(Object.assign({}, this.dataStore).puppies);
             }).toPromise().catch(this.handleError);
     }

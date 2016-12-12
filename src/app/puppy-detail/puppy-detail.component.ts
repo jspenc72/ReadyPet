@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 
 export class PuppyDetailComponent implements OnInit {
   puppy: Puppy = { _id:null, name:'', breed:'', color:'' };
-  id:number;
+  id:string;
   
   isEdit: boolean = false;
 

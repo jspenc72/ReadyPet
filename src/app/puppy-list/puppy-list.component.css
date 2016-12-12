@@ -1,6 +1,3 @@
-html {
-  height: 100%; }
-
 .wrapper {
   position: absolute;
   top: 0;
@@ -22,7 +19,7 @@ html {
     vertical-align: middle; }
 
 .table-footer {
-  border: 1px solid #d7d7d7;
+  border: 1px solid lightgray;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 0 4px 2px -2px lightgray;
@@ -32,11 +29,18 @@ tr:hover .delete .fa {
   visibility: visible; }
 
 .delete {
-  width: 32px;
-  color: red; }
+  width: 39px;
+  color: #ff8080; }
   .delete .fa {
     font-size: 150%;
     visibility: hidden; }
+
+#puppyTable {
+  width: 100%; }
+  #puppyTable th, #puppyTable td {
+    padding: 10px; }
+  #puppyTable tr.selected td {
+    background: lightgray; }
 
 #puppyTable {
   width: 100%; }
@@ -67,7 +71,6 @@ tr:hover .delete .fa {
 
   .delete .fa {
     font-size: 150%;
-    visibility: visible;
-    opacity: .5; } }
+    visibility: visible; } }
 
 /*# sourceMappingURL=puppy-list.component.css.map */

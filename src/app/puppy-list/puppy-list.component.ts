@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { SearchPipe } from '../pipes/search.pipe';
 import { Puppy, PuppyService } from '../services/puppy.service';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,9 @@ import { Router } from '@angular/router';
 
 export class PuppyListComponent implements OnInit {
   searchStr: string = '';
-  puppies: Observable<Puppy[]>;
+  puppies: Puppy[];
+
+  constructor( public router:Router, private puppyService: PuppyService ) { }
   
   onSearch(search){
     this.searchStr = search;
@@ -27,13 +29,13 @@ export class PuppyListComponent implements OnInit {
     $event.stopPropagation();
     this.puppyService.remove(puppy._id).then(() => {
       this.puppyService.loadAll();
-    });
+    })
   }
-  
-  constructor(public router:Router, private puppyService: PuppyService) { }
 
   ngOnInit() {
-    this.puppies = this.puppyService.puppies;
+    this.puppyService.puppies.subscribe((result) => {
+      this.puppies = result;
+    });
     
     this.puppyService.loadAll();
   }

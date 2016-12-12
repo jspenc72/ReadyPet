@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class PuppyFormComponent implements OnInit {
   model:Puppy = { _id:null, name:'', breed:'', color:'' };
-  id:number = null;
+  id:string = null;
   canSubmit: boolean = true;
   
   

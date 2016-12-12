@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let puppy of puppies | async | search:searchStr" (click)="onClick(puppy)">
+      <tr *ngFor="let puppy of puppies | search:searchStr" (click)="onClick(puppy)">
         <td>{{puppy.name}}</td>
         <td>{{puppy.breed}}</td>
         <td>{{puppy.color}}</td>
